@@ -1,0 +1,12 @@
+{
+  "name": "Call-Stack-Execution",
+  "version": "1.0.0",
+  "description": "`Call stack` is a dynamic data structure it also called `execution stack` or simply `stack`",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
