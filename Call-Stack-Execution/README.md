@@ -1,6 +1,10 @@
-# Call stack
+# Javascript Engin (Call Stack & Heap)
 
-the main job of the JS Engin is to read the javascript code and execute it and this done by :
+The Javascript Engine does a lot of work for us. But the biggest thing is reading our code and executing it. The two main important things in this step are:
+
+1- We need a place to store and write information — data for our app(variables, objects, etc..) for that we use `Memory Heap`.
+
+2- We need to keep track of what's happening to our code line by line for that we use `Call Stack`.
 
 - Memory Heap (order is not important)
   - place to store & write information
@@ -9,13 +13,13 @@ the main job of the JS Engin is to read the javascript code and execute it and t
 - Call Stack (order is important)
   - place to keep track of where we are in the code so that we can run the code in order
 
-let's talk first about `Call Stack`
+## Call Stack
 
-## Definitions
+### Definitions
 
 Call Stack is the place where the code execution has been tracked. Every data in the call stack will be pointed to the memory heap, it also called `execution stack`
 
-Stack Stored in computer RAM just like the heap.
+We can think of a call stack as a region in memory that operates in a first in last out mode
 
 Stack consists of a set of `Stack Frames` that it contain
 
@@ -23,7 +27,7 @@ Stack consists of a set of `Stack Frames` that it contain
 - the parameters were passed to the function
 - current line number
 
-## How it work
+### How it work
 
 - javascript has a **single call stack** which along with other parts like `heap`, `queue` constitutes the Javascript Concurrency Model (implemented inside of V8)
 
@@ -31,9 +35,9 @@ Stack consists of a set of `Stack Frames` that it contain
 
 - Stack: It’s a data structure which records the function calls, basically where in the program we are. If we call a function to execute , we push something on to the stack, and when we return from a function, we pop off the top of the stack. (Last in, First out) Javascript is a single threaded single concurrent language, meaning it can handle one task at a time or a piece of code at a time
 
-## Examples on Call Stack
+### Examples
 
-### in case if everything work right
+#### 1- in case if everything work right
 
 ```js
 function multiply(a, b) {
@@ -47,23 +51,87 @@ console.log(square(2)); // the output will be 4
 
 look at the gif below
 
-![alt text](https://im4.ezgif.com/tmp/ezgif-4-22a86f2ffa01.gif "gif")
+![alt text](https://media.giphy.com/media/SANtxs7a76o3QXfLCo/giphy.gif "gif")
 
 you can see it [here](http://latentflip.com/loupe/?code=ZnVuY3Rpb24gbXVsdGlwbHkoYSwgYikgew0KICByZXR1cm4gYSAqIGI7DQp9DQpmdW5jdGlvbiBzcXVhcmUobikgew0KICByZXR1cm4gbXVsdGlwbHkobiwgbik7DQp9DQoNCmNvbnNvbGUubG9nKHNxdWFyZSgyKSk7!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
 
+Just know that whatever is on top of the stack is what’s running.
+
 In the above, it starts from `console.log(square(2))`, which is pushed on to the stack, next frame on top of it is the function `square` with it’s arguments which in turn calls function `multiply` which is again pushed on to the top of stack and it returns immediately and so is popped out of stack, similarly `square` is then popped out and finally `console statement` is popped out printing the output. All this happens in jiffy (in ms) one at a time.
 
-### in case if infinite loop
+This is the way it works in most languages — we have call stacks and memory heaps. Now, since the Javascript engine implementations vary, where variables are allocated is not 100% the same all the time.
+
+Simple variables can be stored on the stack and complex data structures arrays, objects are stored in memory heap.
+
+#### 2- in case if infinite loop (Stack Overflow)
 
 Sometimes, we get into an infinite loop as we call a function multiple times recursively and as for Chrome browser, there is a limit on the size of the stack which is 16,000 frames , more than that it will just kill things for you and throw Maximum call stack size exceeded (image below)
 
 ![10](https://user-images.githubusercontent.com/55782435/91867469-5d155380-ec7c-11ea-95d7-4139a3e9c067.PNG "maximum call stack size exceeded error")
 
-### in case if an error occurred
+#### 3- in case if an error occurred
 
 You all must have seen the long red error stack trace sometimes in our browser console, that basically indicates the current state of the call stack and where in the function it failed in a top to bottom manner just like stack (see image below)
 
 ![11](https://user-images.githubusercontent.com/55782435/91868343-51765c80-ec7d-11ea-94ec-9c6851f90f70.PNG "error")
 
-we will talk about it later
+## Heap Relation With Stack
+
+### Heap Definitions
+
+Objects are allocated in a heap i.e mostly unstructured region of memory. All the memory allocation to variables and objects happens here.
+
+- place to store & write information
+- Allocate Memory
+- Release Memory
+
 ![alt text](https://i.stack.imgur.com/i6k0Z.png "stack & heap")
+
+### Example
+
+```javascript
+function A() {
+  // memory address 100000
+  console.log("in A"); // 100001
+  B(); // 100002
+  console.log("returned to A"); // 100003
+}
+function B() {
+  // 200000
+  console.log("in B"); // 200001
+  C(); // 200002
+  console.log("returned to B"); // 200003
+}
+function C() {
+  // 300000
+  console.log("in C"); // 300001
+}
+```
+
+the results of the above code will be
+
+```
+2: in A
+7: in B
+12: in C
+9: returned to B
+4: returned to A
+```
+
+for the first 3 statement there is no problem but we will notice that the forth and fifth statement we go back to line 9 after we were in line 12 who this happened?
+
+the stack used the memory address to keep the track for the code execution so what happened theoretically something like this:
+
+```js
+//goto 100000 and execute code
+stack.push(100001); // [ 100001] and execute it
+//goto 200000 and execute code
+stack.push(200001); // [100001,200001] and execute it
+//goto 300000 and execute code
+topOfStack = stack.pop(); //topOfStack=200001
+// goto   topOfStack+1 and execute
+topOfStack = stack.pop(); //topOfStack=100001
+// goto   topOfStack+1 and execute
+```
+
+Who we create in heap still until we close the program but in the stack still until we make `pop` for it
