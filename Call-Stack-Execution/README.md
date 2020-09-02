@@ -134,4 +134,10 @@ topOfStack = stack.pop(); //topOfStack=100001
 // goto   topOfStack+1 and execute
 ```
 
-Who we create in heap still until we close the program but in the stack still until we make `pop` for it
+Who we create in heap still until we close the program but in the stack still until we make `pop` for it.
+
+## Resources  & further reading
+- [video- The JS Call Stack Explained In 9 Minutes](https://www.youtube.com/watch?v=W8AeMrVtFLY)
+- [MDN- Call Stack](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)
+- [medium- Javascript Fundamentals — Call Stack and Memory Heap](https://medium.com/@allansendagi/javascript-fundamentals-call-stack-and-memory-heap-401eb8713204)
+- [medium- Understanding Javascript Function Executions — Call Stack, Event Loop , Tasks & more](https://medium.com/@gaurav.pandvia/understanding-javascript-function-executions-tasks-event-loop-call-stack-more-part-1-5683dea1f5ec)
