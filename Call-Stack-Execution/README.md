@@ -137,18 +137,141 @@ topOfStack = stack.pop(); //topOfStack=100001
 Who we create in heap still until we close the program but in the stack still until we make `pop` for it.
 
 ## Stack and heap differ in the following ways
+
 1- **Memory Allocation**: Stack is used for static memory allocation and Heap for dynamic memory allocation, both stored in the computer's RAM .
 
 2- **Variables**: Variables allocated on the stack are stored directly to the memory and access to this memory is very fast, and it's allocation is dealt with when the program is compiled. When a function or a method calls another function which in turns calls another function etc., the execution of all those functions remains suspended until the very last function returns its value. Variables allocated on the heap have their memory allocated at run time and accessing this memory is a bit slower, but the heap size is only limited by the size of virtual memory.
 
 3- **Access**: The stack is always reserved in a LIFO order, the most recently reserved block is always the next block to be freed. This makes it really simple to keep track of the stack, freeing a block from the stack is nothing more than adjusting one pointer. Element of the heap have no dependencies with each other and can always be accessed randomly at any time. You can allocate a block at any time and free it at any time. This makes it much more complex to keep track of which parts of the heap are allocated or free at any given time.
 
-### When to use stack and when to use heap?
-You can use the stack if you know exactly how much data you need to allocate before compile time and it is not too big. You can use heap if you don't know exactly how much data you will need at runtime or if you need to allocate a lot of data.
+## exercises
 
-In a multi-threaded situation each thread will have its own completely independent stack but they will share the heap. Stack is thread specific and Heap is application specific. The stack is important to consider in exception handling and thread executions.
+1- what is the results?
 
-## Resources  & further reading
+```js
+function foo1() {
+  console.log(1);
+}
+function foo2() {
+  console.log(2);
+}
+function foo3() {
+  console.log(3);
+}
+
+foo1(foo2(foo3()));
+```
+
+<details>
+<summary>Show the results!</summary>
+
+```js
+// 3
+// 2
+// 1
+```
+
+</details>
+
+2- what is the results?
+
+```js
+function foo1() {
+  var x = foo2();
+  return x * 3;
+}
+
+function foo2() {
+  var y = foo3();
+  return Number(y);
+}
+
+function foo3() {
+  return "1";
+}
+
+foo1();
+```
+
+<details>
+<summary>Show the results!</summary>
+
+```js
+// 3
+```
+
+</details>
+
+3- what is the results?
+
+```js
+function firstFunction() {
+  console.log("I'm the first function");
+}
+
+function secondFunction(callback) {
+  callback();
+  console.log("I'm the second function and I expect a callback as an input");
+}
+secondFunction(firstFunction);
+```
+
+<details>
+<summary>Show the results!</summary>
+
+```js
+// I'm the first function
+// I'm the second function and I expect a callback as an input
+```
+
+</details>
+
+4- what is the results?
+
+```js
+function firstFunction() {
+  console.log("I'm the first function");
+}
+
+function secondFunction(callback) {
+  callback();
+  console.log("I'm the second function and I expect a callback as an input");
+}
+
+function thirdFunction(callback) {
+  callback();
+  console.log(
+    "I'm the third function, I'm also expecting a callback as an input"
+  );
+}
+
+thirdFunction(secondFunction(firstFunction));
+```
+
+<details>
+<summary>Show the results!</summary>
+
+```js
+// I'm the first function
+// I'm the second function and I expect a callback as an input
+// TypeError: callback is not a function
+```
+
+so why this error occur?
+because function `secondFunction` return undefined and it will be like this `thirdFunction(undefined)` so when it will run the callback it will be like `undefined()` this is not a function to execute so to solve it we need to call it like this
+
+```js
+thirdFunction(function () {
+  secondFunction(firstFunction);
+});
+```
+
+[see it here](http://latentflip.com/loupe/?code=ZnVuY3Rpb24gZmlyc3RGdW5jdGlvbigpIHsNCiAgY29uc29sZS5sb2coIkknbSB0aGUgZmlyc3QgZnVuY3Rpb24iKTsNCn0NCg0KZnVuY3Rpb24gc2Vjb25kRnVuY3Rpb24oY2FsbGJhY2spIHsNCiAgY2FsbGJhY2soKTsNCiAgY29uc29sZS5sb2coIkknbSB0aGUgc2Vjb25kIGZ1bmN0aW9uIGFuZCBJIGV4cGVjdCBhIGNhbGxiYWNrIGFzIGFuIGlucHV0Iik7DQp9DQoNCmZ1bmN0aW9uIHRoaXJkRnVuY3Rpb24oY2FsbGJhY2spIHsNCiBjYWxsYmFjaygpOw0KIGNvbnNvbGUubG9nKCJJJ20gdGhlIHRoaXJkIGZ1bmN0aW9uLCBJJ20gYWxzbyBleHBlY3RpbmcgYSBjYWxsYmFjayBhcyBhbiBpbnB1dCIpOw0KfQ0KDQp0aGlyZEZ1bmN0aW9uKGZ1bmN0aW9uKCkge3NlY29uZEZ1bmN0aW9uKGZpcnN0RnVuY3Rpb24pfSk%3D!!!PGJ1dHRvbj5DbGljayBtZSE8L2J1dHRvbj4%3D)
+
+</details>
+
+## Resources & further reading
+
 - [video- The JS Call Stack Explained In 9 Minutes](https://www.youtube.com/watch?v=W8AeMrVtFLY)
 - [MDN- Call Stack](https://developer.mozilla.org/en-US/docs/Glossary/Call_stack)
 - [medium- Javascript Fundamentals — Call Stack and Memory Heap](https://medium.com/@allansendagi/javascript-fundamentals-call-stack-and-memory-heap-401eb8713204)
