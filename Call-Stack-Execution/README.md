@@ -1,4 +1,4 @@
-# Javascript Engin (Call Stack & Heap)
+# Javascript Engine (Call Stack & Heap)
 
 The Javascript Engine does a lot of work for us. But the biggest thing is reading our code and executing it. The two main important things in this step are:
 
@@ -135,6 +135,18 @@ topOfStack = stack.pop(); //topOfStack=100001
 ```
 
 Who we create in heap still until we close the program but in the stack still until we make `pop` for it.
+
+## Stack and heap differ in the following ways
+1- **Memory Allocation**: Stack is used for static memory allocation and Heap for dynamic memory allocation, both stored in the computer's RAM .
+
+2- **Variables**: Variables allocated on the stack are stored directly to the memory and access to this memory is very fast, and it's allocation is dealt with when the program is compiled. When a function or a method calls another function which in turns calls another function etc., the execution of all those functions remains suspended until the very last function returns its value. Variables allocated on the heap have their memory allocated at run time and accessing this memory is a bit slower, but the heap size is only limited by the size of virtual memory.
+
+3- **Access**: The stack is always reserved in a LIFO order, the most recently reserved block is always the next block to be freed. This makes it really simple to keep track of the stack, freeing a block from the stack is nothing more than adjusting one pointer. Element of the heap have no dependencies with each other and can always be accessed randomly at any time. You can allocate a block at any time and free it at any time. This makes it much more complex to keep track of which parts of the heap are allocated or free at any given time.
+
+### When to use stack and when to use heap?
+You can use the stack if you know exactly how much data you need to allocate before compile time and it is not too big. You can use heap if you don't know exactly how much data you will need at runtime or if you need to allocate a lot of data.
+
+In a multi-threaded situation each thread will have its own completely independent stack but they will share the heap. Stack is thread specific and Heap is application specific. The stack is important to consider in exception handling and thread executions.
 
 ## Resources  & further reading
 - [video- The JS Call Stack Explained In 9 Minutes](https://www.youtube.com/watch?v=W8AeMrVtFLY)
