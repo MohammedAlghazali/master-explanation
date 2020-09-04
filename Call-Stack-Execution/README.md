@@ -6,13 +6,6 @@ The Javascript Engine does a lot of work for us. But the biggest thing is readin
 
 2- We need to keep track of what's happening to our code line by line for that we use `Call Stack`.
 
-- Memory Heap (order is not important)
-  - place to store & write information
-  - Allocate Memory
-  - Release Memory
-- Call Stack (order is important)
-  - place to keep track of where we are in the code so that we can run the code in order
-
 ## Call Stack
 
 ### Definitions
@@ -75,17 +68,17 @@ You all must have seen the long red error stack trace sometimes in our browser c
 
 ![11](https://user-images.githubusercontent.com/55782435/91868343-51765c80-ec7d-11ea-94ec-9c6851f90f70.PNG "error")
 
-## Heap Relation With Stack
+## Heap
 
 ### Heap Definitions
 
-Objects are allocated in a heap i.e mostly unstructured region of memory. All the memory allocation to variables and objects happens here.
-
+It is an unstructured memory that is used for memory allocation of the variables and the objects, so its work it:
 - place to store & write information
 - Allocate Memory
 - Release Memory
 
 ![alt text](https://i.stack.imgur.com/i6k0Z.png "stack & heap")
+as you see in the picture the `order is not important in heap` but the `order is important in call stack`
 
 ### Example
 
@@ -146,7 +139,7 @@ Who we create in heap still until we close the program but in the stack still un
 
 ## exercises
 
-1- what is the results?
+### 1- what is the results?
 
 ```js
 function foo1() {
@@ -173,7 +166,7 @@ foo1(foo2(foo3()));
 
 </details>
 
-2- what is the results?
+### 2- what is the results?
 
 ```js
 function foo1() {
@@ -202,7 +195,7 @@ foo1();
 
 </details>
 
-3- what is the results?
+### 3- what is the results?
 
 ```js
 function firstFunction() {
@@ -226,7 +219,7 @@ secondFunction(firstFunction);
 
 </details>
 
-4- what is the results?
+### 4- what is the results?
 
 ```js
 function firstFunction() {
