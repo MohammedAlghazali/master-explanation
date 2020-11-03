@@ -1,4 +1,4 @@
-# Javascript Engine (Call Stack & Heap)
+# Javascript Engine (Call Stack & Memory Heap)
 
 The Javascript Engine does a lot of work for us. But the biggest thing is reading our code and executing it. The two main important things in this step are:
 
